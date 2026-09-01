@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "commerce-game-integration",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-08-01",
+
+  // Static frontend (public/) is served directly by the Assets runtime.
+  // /api/* is forced to hit the Worker first; everything else falls to assets.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+
+  // KV is the single source of persistence. Locally, `wrangler dev` uses an
+  // on-disk replica under .wrangler/state, so data survives restarts.
+  // For a real deploy, run `npm run kv:create` and paste the id below.
+  "kv_namespaces": [
+    {
+      "binding": "GAME_KV",
+      "id": "PLACEHOLDER_run_npm_run_kv_create_and_paste_id_here"
+    }
+  ],
+
+  "observability": {
+    "enabled": true
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "commerce-game-integration",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mock video game wired to Discord Commerce — a playtesting base for the commerce integration.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "kv:create": "wrangler kv namespace create GAME_KV",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "hono": "^4.6.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260828.1",
+    "typescript": "^5.6.2",
+    "wrangler": "^4.0.0"
+  }
+}

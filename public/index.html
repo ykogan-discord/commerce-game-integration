@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Snake · Commerce Playground</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>"
+    />
+  </head>
+  <body>
+    <!-- Login gate: covers everything until a session exists -->
+    <div id="auth-gate" class="auth-gate hidden">
+      <form id="auth-form" class="auth-card">
+        <h1>🐍 Snake</h1>
+        <p class="auth-sub">A commerce integration playground. Log in to play.</p>
+        <input id="auth-username" name="username" placeholder="Username" autocomplete="username" />
+        <input
+          id="auth-password"
+          name="password"
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
+        <button id="auth-submit" type="submit">Log in</button>
+        <p class="auth-error" id="auth-error"></p>
+        <p class="auth-toggle">
+          <span id="auth-toggle-text">No account?</span>
+          <a href="#" id="auth-toggle-link">Register</a>
+        </p>
+      </form>
+    </div>
+
+    <!-- Main app: shown once authenticated -->
+    <div id="app" class="app hidden">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Open menu">☰</button>
+        <div class="brand">🐍 Snake<span class="brand-tag">commerce playground</span></div>
+        <nav class="tabs">
+          <a href="#/game" class="tab" data-tab="game">Game</a>
+          <a href="#/storefront" class="tab" data-tab="storefront">Storefront</a>
+          <a href="#/commerce" class="tab" data-tab="commerce">Commerce</a>
+        </nav>
+        <div class="user-box">
+          <span id="user-name"></span>
+          <button id="logout-btn" class="ghost">Log out</button>
+        </div>
+      </header>
+
+      <main id="views">
+        <!-- ===== Tab 1: Game ===== -->
+        <section class="view" data-view="game">
+          <div class="game-panel">
+            <div class="game-hud">
+              <span>Score: <b id="score">0</b></span>
+              <span id="lives-hud" class="lives-hud hidden">Lives: <b id="lives">0</b> ❤️</span>
+              <span>Best: <b id="best">0</b></span>
+            </div>
+            <div class="board-wrap">
+              <canvas id="board" width="560" height="560"></canvas>
+              <div class="game-overlay" id="game-overlay">
+                <p id="overlay-title">Ready?</p>
+                <p class="overlay-sub" id="overlay-sub">Arrow keys / WASD to steer</p>
+                <button id="overlay-btn" type="button">Start game</button>
+              </div>
+            </div>
+            <label class="key-toggle">
+              <input type="checkbox" id="dvorak-toggle" />
+              Dvorak keys <span class="muted">(steer with , a o e)</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- ===== Tab 2: Storefront (intentionally empty) ===== -->
+        <section class="view" data-view="storefront">
+          <div class="placeholder">
+            <h2>Storefront management</h2>
+            <p class="muted">Nothing here yet.</p>
+            <p class="placeholder-note">
+              This tab will manage custom SKUs and storefront pages via the commerce API.
+            </p>
+          </div>
+        </section>
+
+        <!-- ===== Tab 3: Commerce debugging (static scaffold — an exercise for the reader) ===== -->
+        <section class="view" data-view="commerce">
+          <div id="commerce-root"></div>
+        </section>
+      </main>
+
+      <!-- ===== Burger drawer: Leaderboard / Store / Inventory ===== -->
+      <div id="drawer-backdrop" class="drawer-backdrop hidden"></div>
+      <aside id="drawer" class="drawer hidden" aria-label="Menu">
+        <div class="drawer-head">
+          <div class="drawer-nav">
+            <button class="drawer-tab active" data-panel="leaderboard">Leaderboard</button>
+            <button class="drawer-tab" data-panel="store">Store</button>
+            <button class="drawer-tab" data-panel="inventory">Inventory</button>
+          </div>
+          <span class="coins" title="Your coin balance">🪙 <b id="coins">0</b></span>
+        </div>
+
+        <div class="drawer-body">
+          <div class="drawer-panel" data-panel="leaderboard">
+            <p class="muted">You and your friends, by high score.</p>
+            <ol id="leaderboard" class="leaderboard"></ol>
+            <form id="add-friend-form" class="add-friend">
+              <input id="friend-input" placeholder="Add friend by username" />
+              <button type="submit">Add</button>
+            </form>
+            <p class="friend-msg" id="friend-msg"></p>
+          </div>
+
+          <div class="drawer-panel hidden" data-panel="store">
+            <p class="muted">Buy items to customize your snake. Skins are one-time; consumables restock.</p>
+            <div id="store-grid" class="store-grid"></div>
+          </div>
+
+          <div class="drawer-panel hidden" data-panel="inventory">
+            <p class="muted">Your purchases. Equip skins, or return one-time items for a refund.</p>
+            <div id="inventory-list" class="inventory-list"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ===== Confirm modal (buy / return) ===== -->
+    <div id="modal-backdrop" class="modal-backdrop hidden">
+      <div class="modal">
+        <p id="modal-text"></p>
+        <div class="modal-actions">
+          <button id="modal-cancel" class="ghost">Cancel</button>
+          <button id="modal-ok">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/snake.js"></script>
+    <script src="/commerce.js"></script>
+    <script src="/store.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
